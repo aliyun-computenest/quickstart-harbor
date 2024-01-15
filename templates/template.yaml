@@ -301,9 +301,6 @@ Parameters:
     Label: 
       en: Admin Password
       zh-cn: 管理员密码
-    ConstraintDescription: 
-      en: Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=|{}[]:;<>,.?/ Special symbol in)
-      zh-cn: 长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;<>,.?/ 中的特殊符号）
     AssociationProperty: ALIYUN::ECS::Instance::Password
 Conditions:
   CreateAck:
@@ -445,20 +442,11 @@ Resources:
               - ManagedKubernetesCluster
               - ClusterId
           - Ref: ClusterId
+      
       HelmChartUrl: '{{ computenest::helmchart::chartUrl }}'
       DockerConfigJson: '{{ computenest::helm::dockerconfigjson }}'
-      ChartValues: 
-        service: 
-          type: LoadBalancer
-        postgresql: 
-          enabled: True
-          adminPassword: 
-            Ref: AdminPassword
-          primary: 
-            persistence: 
-              enabled: True
-              storageClass: alicloud-disk-essd
-              size: 40Gi
+      
+      ChartValues: {'service': {'type': 'LoadBalancer'}, 'postgresql': {'enabled': True, 'adminPassword': {'Ref': 'AdminPassword'}, 'primary': {'persistence': {'enabled': True, 'storageClass': 'alicloud-disk-essd', 'size': '40Gi'}}}}
       Namespace:
         Ref: ALIYUN::StackName
       ReleaseName: harbor
