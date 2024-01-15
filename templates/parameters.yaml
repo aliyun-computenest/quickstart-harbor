@@ -1,5 +1,6 @@
 chartUrl: '{{ computenest::helmchart::chartUrl }}'
 dockerConfigJson: '{{ computenest::helm::dockerconfigjson }}'
+releaseName: harbor
 parameters:
   AdminPassword:
     NoEcho: true

@@ -461,7 +461,7 @@ Resources:
               size: 40Gi
       Namespace:
         Ref: ALIYUN::StackName
-      ReleaseName: argocd
+      ReleaseName: harbor
       WaitUntil: 
         - Kind: Service
           Name: harbor-server
