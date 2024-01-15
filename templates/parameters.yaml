@@ -1,0 +1,37 @@
+chartUrl: '{{ computenest::helmchart::chartUrl }}'
+dockerConfigJson: '{{ computenest::helm::dockerconfigjson }}'
+parameters:
+  AdminPassword:
+    NoEcho: true
+    Type: String
+    Label:
+      en: Admin Password
+      zh-cn: 管理员密码
+    ConstraintDescription:
+      en: Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=|{}[]:;<>,.?/ Special symbol in)
+      zh-cn: 长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;<>,.?/ 中的特殊符号）
+    AssociationProperty: ALIYUN::ECS::Instance::Password
+values:
+  service:
+    type: LoadBalancer
+  postgresql:
+    enabled: true
+    adminPassword:
+      Ref: AdminPassword
+    primary:
+      persistence:
+        enabled: true
+        storageClass: alicloud-disk-essd
+        size: 40Gi
+waitUntils:
+  - Kind: Service
+    Name: harbor-server
+    JsonPath: $.status.loadBalancer.ingress[0].ip
+    Operator: NotEmpty
+    FirstMatch: true
+    Timeout: 300
+outputs:
+  Kind: Service
+  Name: harbor-server
+  JsonPath: $.status.loadBalancer.ingress[0].ip
+protocol: https
