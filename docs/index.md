@@ -8,7 +8,7 @@ Harbor is an open-source enterprise level DockerRegistry project by VMware, aime
 
 ## Billing instructions
 
-The expenses on Hmt mainly involve：
+The expenses on Harbor mainly involve：
 
 - Selected vCPU and memory specifications
 - System disk type and capacity
