@@ -1,73 +1,79 @@
-# Harbor Community Edition
+# Harbor计算巢快速部署
 
->**Disclaimers：**This service is provided by a third party, and we make every effort to ensure its security, accuracy, and reliability, but we cannot guarantee that it is completely free from failures, interruptions, errors, or attacks. Therefore, our company hereby declares that we make no representations, warranties or commitments regarding the content, accuracy, completeness, reliability, applicability, and timeliness of this service, and we are not liable for any direct or indirect losses or damages arising from your use of this service; For the third-party websites, applications, products, and services accessed by you through this service, you are not responsible for their content, accuracy, completeness, reliability, applicability, and timeliness. You shall bear the risks and responsibilities arising from the consequences of use on your own; We are not responsible for any losses or damages arising from your use of this service, including but not limited to direct, indirect, profit, goodwill, data or other economic losses, even if our company has been informed in advance of the possibility of such losses or damages; We reserve the right to modify this statement from time to time, so please regularly check this statement before using this service. If you have any questions or concerns about this statement or this service, please contact us.
 
-## Overview
+>**免责声明：**本服务由第三方提供，我们尽力确保其安全性、准确性和可靠性，但无法保证其完全免于故障、中断、错误或攻击。因此，本公司在此声明：对于本服务的内容、准确性、完整性、可靠性、适用性以及及时性不作任何陈述、保证或承诺，不对您使用本服务所产生的任何直接或间接的损失或损害承担任何责任；对于您通过本服务访问的第三方网站、应用程序、产品和服务，不对其内容、准确性、完整性、可靠性、适用性以及及时性承担任何责任，您应自行承担使用后果产生的风险和责任；对于因您使用本服务而产生的任何损失、损害，包括但不限于直接损失、间接损失、利润损失、商誉损失、数据损失或其他经济损失，不承担任何责任，即使本公司事先已被告知可能存在此类损失或损害的可能性；我们保留不时修改本声明的权利，因此请您在使用本服务前定期检查本声明。如果您对本声明或本服务存在任何问题或疑问，请联系我们。
 
-Harbor is an open-source enterprise level DockerRegistry project by VMware, aimed at helping users quickly build an enterprise level DockerRegistry service. It is based on Docker's open-source registry and provides management UI, Role Based Access Control, AD/LDAP integration, and Auditlogging functions that meet the needs of enterprise users, while also restoring support for Chinese.
 
-## Billing instructions
+## 概述
 
-The expenses on Harbor mainly involve：
 
-- Selected vCPU and memory specifications
-- System disk type and capacity
-- Public network bandwidth
-- Kubernetes and storage space
+Harbor是VMware公司开源的企业级DockerRegistry项目，其目标是帮助用户迅速搭建一个企业级的Dockerregistry服务。 它以Docker公司开源的registry为基础，提供了管理UI，基于角色的访问控制(Role Based Access Control)，AD/LDAP集成、以及审计日志(Auditlogging) 等企业用户需求的功能，同时还原生支持中文。
 
-## Deployment Architecture
+
+## 计费说明
+
+Harbor上的费用主要涉及：
+
+- 所选vCPU与内存规格
+- 系统盘类型及容量
+- 公网带宽
+- Kubernetes集群规格
+
+## 部署架构
 
 <img src="1.png" width="1500" height="700" align="bottom"/>
 
-## Parameter Description
+## 参数说明
 
-| Parameter Group            | Parameter item             | illustrate                                                                                                                                           |
-|----------------------------|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Service Instance           | Service Instance Name      | The name can be up to 64 characters in length, and can contain digits, letters, hyphens (-), and underscores (_). The name must start with a letter. |
-|                            | Region                     | The region where the service instance is deployed.                                                                                                   |
-|                            | Instance Charge Type       | Charge type for the service instance.                                                                                                                |
-| ECS instance configuration | Instance Type              | ECS instance type                                                                                                                                    |
-|                            | Instance Password          | Server login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+={}[]:;'<>,.?/ Special symbol in) |
-| network configuration      | Availability Zone          | The availability zone where the ECS instance is located                                                                                              |
-|                            | VPC ID                     | VPC where resources are located                                                                                                                      |
-|                            | VSwitch ID                 | The availability zone of the VSwitch                                                                                                                 |
-| Kubernetes configuration   | Worker node specifications | Specification of Worker nodes that can be used in the availability zone                                                                              |
-|                            | Worker system disk type    | The type of disk used by the Worker system disk(default cloud_essd)                                                                                  |
-|                            | Worker system disk size    | The size of disk used by the Worker system disk(default 120GB)                                                                                       |
-|                            | Ack network plugin         | Network plugins required for the ack cluster                                                                                                         |
-|                            | Pod network CIDR           | Pod network CIDR                                                                                                                                     |
-|                            | Service CIDR               | Service CIDR                                                                                                                                         |
+| 参数组                       | 参数项                        | 说明                                                                                           |
+|---------------------------|----------------------------|----------------------------------------------------------------------------------------------|
+| 服务实例                      | 服务实例名称                     | 长度不超过64个字符，必须以英文字母开头，可包含数字、英文字母、短划线（-）和下划线（_）                                                |
+|                           | 地域                         | 服务实例部署的地域                                                                                    |
+|                           | 付费类型                       | 资源的计费类型：按量付费和包年包月                                                                            |
+| ECS实例配置                   | 实例类型                       | 可用区下可以使用的实例规格                                                                                |
+|                           | 实例密码                       | 长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*-+=&#124;{}[]:;'<>,.?/ 中的特殊符号）                       |
+| 网络配置                      | 可用区                        | ECS实例所在可用区                                                                                   |
+|                           | VPC ID                     | 资源所在VPC                                                                                      |
+|                           | 交换机ID                      | 资源所在交换机                                                                                      |
+| Kubernetes配置              | Worker节点规格                 | 可用区下可以使用的Worker节点规格                                                                          |
+|                           | Worker 系统盘磁盘类型             | 可用区下可以使用的Worker节点类型(default cloud_essd)                                                      |
+|                           | Worker节点系统盘大小(GB)          | 可用区下可以使用的Worker节点大小(default 120GB)                                                           |
+|                           | ack网络插件                    | 集群使用的网络插件                                                                                    |
+|                           | Pod 网络 CIDR                | Pod路由                                                                                        |
+|                           | Service CIDR               | 服务路由                                                                                         |
 
-## Permissions required
+## RAM账号所需权限
 
-Deploying this service instance requires accessing and creating some Alibaba Cloud resources. Therefore, your account needs to include permissions for the following resources.
-  **Note**：You only need to add this permission when your account is a RAM account.
+部署Harbor，需要对部分阿里云资源进行访问和创建操作。因此您的账号需要包含如下资源的权限。
+  **说明**：当您的账号是RAM账号时，才需要添加此权限。
 
-| Permission policy name            | Remarks                                                                |
-|-----------------------------------|------------------------------------------------------------------------|
-| AliyunECSFullAccess               | Permission to manage cloud server service (ECS)                        |
-| AliyunVPCFullAccess               | Permission to manage private network (VPC)                             |
-| AliyunROSFullAccess               | Permission to manage Resource Orchestration Service (ROS)              |
-| AliyunComputeNestUserFullAccess   | Manage user-side permissions for the ComputeNest service (ComputeNest) |
-| AliyunSLBFullAccess               | Manage permissions for Load Balancing Service (SLB)                    |
+| 权限策略名称                          | 备注                                 |
+|---------------------------------|------------------------------------|
+| AliyunECSFullAccess             | 管理云服务器服务（ECS）的权限                   |
+| AliyunVPCFullAccess             | 管理专有网络（VPC）的权限                     |
+| AliyunROSFullAccess             | 管理资源编排服务（ROS）的权限                   |
+| AliyunComputeNestUserFullAccess | 管理计算巢服务（ComputeNest）的用户侧权限         |
+| AliyunPostGreSQLFullAccess      | 管理云数据库服务（PostGreSQL）的权限            |
+| AliyunSLBFullAccess             | 管理负载均衡（SLB）的权限                     |
 
-## Deployment steps
+## 部署流程
 
-1.Visit Deployment Link and fill in the deployment parameters as prompted:[Deployment link](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-2b7575c1f3d74026aec5)
+1.访问Harbor服务[部署链接](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-2b7575c1f3d74026aec5)
+，按提示填写部署参数：
 
 ![image.png](2.png)
 
-2.After filling in the deployment link parameters, you can see the corresponding inquiry details. After confirming the parameters, click **Next step: Confirm the order**.
+2.参数填写完成后可以看到对应询价明细，确认参数后点击**下一步：确认订单**。
 
 ![image.png](3.png)
 
-3.After confirming the completion of the order, agree to the service agreement and click **Create Now** to enter the deployment phase.
+3.确认订单完成后同意服务协议并点击**立即创建**进入部署阶段。
 
 ![image.png](4.png)
 
-4.Wait for deployment to complete before entering service instance management.
+4.等待部署完成后进入服务实例管理。
 
-5.Find Endpoint links in the console and copy them to the browser to access them.
+5.在控制台找到Harbor服务链接并访问。
 
 ![image.png](5.png)
 ![image.png](6.png)
