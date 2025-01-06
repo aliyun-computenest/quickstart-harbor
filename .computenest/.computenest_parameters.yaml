@@ -1,0 +1,25 @@
+ChartValues:
+  postgresql:
+    enabled: true
+    adminPassword: pleaseChangeThis
+    primary:
+      persistence:
+        storageClass: alicloud-disk-essd
+        size: 40Gi
+        enabled: true
+  service:
+    type: LoadBalancer
+HelmChartPath: helm
+RuntimeType: Kubernetes
+OutputCmd: |-
+  export SERVICE_IP=$(kubectl get svc --namespace ${Namespace} ${ReleaseName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo "Visit URL: http://$SERVICE_IP/"
+ServiceType: private
+ArtifactSourceType: HelmChart
+ServiceBuildRegion: cn-hangzhou
+RepoName: aliyun-computenest/quickstart-harbor
+RegionId: cn-hangzhou
+OutputType: OutputCommand
+Owner: Alicloud-ComputeNest
+Branch: main
+Platform: github
