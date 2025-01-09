@@ -1,0 +1,44 @@
+ChartValues:
+  externalURL: https://core.harbor.domain
+  persistence:
+    persistentVolumeClaim:
+      registry:
+        storageClass: alicloud-disk-topology-alltype
+        size: 40Gi
+      database:
+        storageClass: alicloud-disk-topology-alltype
+        size: 40Gi
+      jobservice:
+        jobLog:
+          storageClass: alicloud-disk-topology-alltype
+          size: 40Gi
+      trivy:
+        storageClass: alicloud-disk-topology-alltype
+        size: 40Gi
+      redis:
+        storageClass: alicloud-disk-topology-alltype
+        size: 40Gi
+    enabled: true
+  harborAdminPassword: Harbor12345
+  expose:
+    tls:
+      auto:
+        commonName: core.harbor.domain
+    type: loadBalancer
+HelmChartPath: helm
+RuntimeType: Kubernetes
+OutputCmd: |-
+  export SERVICE_IP=$(kubectl get svc --namespace ${Namespace} harbor -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  export ADMIN_PASSWORD=$(kubectl get secret -n ${Namespace} harbor-core -o jsonpath='{.data.HARBOR_ADMIN_PASSWORD}' | base64 -d)
+  echo "https://$SERVICE_IP/ \n"
+  echo "账号: admin \n"
+  echo "密码: $ADMIN_PASSWORD"
+ServiceType: private
+ArtifactSourceType: HelmChart
+ServiceBuildRegion: ap-southeast-1
+RepoName: aliyun-computenest/quickstart-harbor
+RegionId: cn-hangzhou
+OutputType: OutputCommand
+Owner: yehanyh
+Branch: main
+Platform: github
