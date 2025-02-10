@@ -501,16 +501,22 @@ Resources:
       OutputCmd: |
         export SERVICE_IP=$(kubectl get svc --namespace ${Namespace} harbor -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
         export ADMIN_PASSWORD=$(kubectl get secret -n ${Namespace} harbor-core -o jsonpath='{.data.HARBOR_ADMIN_PASSWORD}' | base64 -d)
-        echo "https://$SERVICE_IP/"
+        echo "Url: https://$SERVICE_IP/ <br>"
+        echo "Username: admin <br>"
+        echo "Password: $ADMIN_PASSWORD"
 Outputs:
   Instruction:
     Description:
       zh-cn: 使用说明
       en: Instruction
     Value:
-      Fn::GetAtt:
-        - FluxHelmApplicationModule
-        - HelmOutput
+      Fn::Sub:
+        - |
+          ${OutputData}
+        - OutputData:
+            Fn::GetAtt:
+              - FluxHelmApplicationModule
+              - HelmOutput
 Metadata:
   ALIYUN::ROS::Interface:
     ParameterGroups:
